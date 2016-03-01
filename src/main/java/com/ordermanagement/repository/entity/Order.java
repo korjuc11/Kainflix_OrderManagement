@@ -11,5 +11,5 @@ import javax.persistence.Table;
 public class Order {
 
     private int OrderID;
-    private
+
 }
