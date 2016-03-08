@@ -16,18 +16,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderServiceImpl implements OrderService{
 
     @Autowired
-    private OrderRepository oderRepository;
+    private OrderRepository orderRepository;
 
     @Override
     public Iterable<Order> getAllOrders() {
-        return oderRepository.findAll();
+        return orderRepository.findAll();
     }
 
     @Override
     public void saveOrder(Order order) {
-        oderRepository.save(order);
+        orderRepository.save(order);
     }
 
     @Override
-    public void deleteOrder(Order order) { oderRepository.delete(order);}
+    public void deleteOrder(Order order) { orderRepository.delete(order);}
 }
