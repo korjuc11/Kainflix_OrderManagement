@@ -19,12 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 public class OrderController {
 
     @RequestMapping(method = RequestMethod.POST, value="/cart")
-    public int create(@RequestBody int customerId, HttpServletResponse response)
+    public int create(@RequestParam int customerId, HttpServletResponse response)
     {
-        response.setStatus(HttpStatus.OK.value());
-        response.setStatus(HttpStatus.NO_CONTENT.value());
+        int orderId = 0;
 
-        return 0;
+        response.setStatus(HttpStatus.OK.value());
+        //response.setStatus(HttpStatus.NO_CONTENT.value());
+
+        return orderId;
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/cart")
