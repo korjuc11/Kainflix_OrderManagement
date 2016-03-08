@@ -1,5 +1,6 @@
 package com.ordermanagement.controller;
 
+import com.ordermanagement.repository.entity.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +33,19 @@ public class OrderController {
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/cart")
-    public ModelAndView add(ModelAndView model)
+    public void add(ModelAndView model)
+    {
+
+    }
+
+    @RequestMapping(method=RequestMethod.DELETE, value="/cart")
+    public void add(@RequestBody int orderId, @RequestBody int movieId)
+    {
+
+    }
+
+    @RequestMapping(method=RequestMethod.GET, value="/cart")
+    public Order add(@RequestBody int orderId)
     {
         return null;
     }
