@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 public class OrderController {
 
     @RequestMapping(method = RequestMethod.POST, value="/cart")
-    public int create(@RequestParam int customerId, HttpServletResponse response)
+    public int create(@RequestBody int customerId, HttpServletResponse response)
     {
         int orderId = 0;
 
