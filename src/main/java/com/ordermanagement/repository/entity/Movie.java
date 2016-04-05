@@ -8,23 +8,23 @@ import java.io.Serializable;
  */
 @Entity
 @Table
-public class Product implements Serializable {
+public class Movie implements Serializable {
 
     @Id
     @GeneratedValue
     @Column
-    private int productId;
+    private int movieId;
 
     @Column
     private String description;
 
 
-    public int getProductId() {
-        return productId;
+    public int setProductId() {
+        return movieId;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setMovieId(int productId) {
+        this.movieId = productId;
     }
 
     public String getDescription() {
