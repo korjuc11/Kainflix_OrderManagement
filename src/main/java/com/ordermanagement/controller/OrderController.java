@@ -1,6 +1,8 @@
 package com.ordermanagement.controller;
 
 import com.ordermanagement.repository.entity.Order;
+import com.ordermanagement.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,9 @@ import java.util.Map;
 
 @RestController
 public class OrderController {
+
+    @Autowired
+    private OrderService orderService;
 
     @RequestMapping(method = RequestMethod.POST, value="/cart")
     public int create(@RequestBody Map<String, Object> payload, HttpServletResponse response)

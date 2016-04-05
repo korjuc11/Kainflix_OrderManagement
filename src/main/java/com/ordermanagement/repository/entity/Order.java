@@ -10,32 +10,29 @@ import java.io.Serializable;
 @Table
 public class Order implements Serializable {
 
-    @GeneratedValue
+    @Id
+    @Column
+    private int customerId;
+
+
     @Id
     @Column
     private int orderID;
 
-    @Column
-    private String description;
 
-    public int getId()
-    {
-        return this.orderID;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public String getDescription()
-    {
-        return this.description;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
-    public void setId(int id)
-    {
-        this.orderID =id;
+    public int getOrderID() {
+        return orderID;
     }
 
-    public void setDescription(String description)
-    {
-        this.description = description;
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
     }
-
 }
