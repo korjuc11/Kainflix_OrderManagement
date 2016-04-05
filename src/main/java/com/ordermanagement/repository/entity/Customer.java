@@ -2,6 +2,7 @@ package com.ordermanagement.repository.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.LinkedList;
 
 /**
  * Created by Julian on 05.04.2016.
@@ -20,6 +21,13 @@ public class Customer implements Serializable {
 
     @Column
     private String lastName;
+
+    private LinkedList<Order> orders;
+
+    private LinkedList<Movie> movies;
+
+    public Customer() {
+    }
 
     public int getCustomerId() {
         return customerId;

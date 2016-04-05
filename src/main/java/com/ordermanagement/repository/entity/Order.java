@@ -2,6 +2,7 @@ package com.ordermanagement.repository.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.LinkedList;
 
 /**
  * Created by Julian on 01.03.2016.
@@ -10,29 +11,34 @@ import java.io.Serializable;
 @Table
 public class Order implements Serializable {
 
-    @Id
-    @Column
-    private int customerId;
-
-
+    @GeneratedValue
     @Id
     @Column
     private int orderID;
 
+    @Column
+    private String description;
 
-    public int getCustomerId() {
-        return customerId;
+    private Customer customer;
+
+    public int getId()
+    {
+        return this.orderID;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public String getDescription()
+    {
+        return this.description;
     }
 
-    public int getOrderID() {
-        return orderID;
+    public void setId(int id)
+    {
+        this.orderID =id;
     }
 
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
+
 }

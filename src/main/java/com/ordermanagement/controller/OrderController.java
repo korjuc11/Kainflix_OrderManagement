@@ -21,9 +21,6 @@ import java.util.Map;
 @RestController
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
-
     @RequestMapping(method = RequestMethod.POST, value="/cart")
     public int create(@RequestBody Map<String, Object> payload, HttpServletResponse response)
     {
