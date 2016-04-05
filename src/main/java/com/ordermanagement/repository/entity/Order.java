@@ -18,8 +18,6 @@ public class Order implements Serializable {
     @Column
     private String description;
 
-
-
     public int getId()
     {
         return this.orderID;
