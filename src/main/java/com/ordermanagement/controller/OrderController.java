@@ -38,18 +38,31 @@ public class OrderController {
     {
         int customerId = (int) payload.get("customerId");
 
+        //Customer c = new Customer();
+        //customerService.saveCustomer(c);
+
         Order newOrder = new Order();
+        orderService.saveOrder(newOrder);
+
+        boolean customerExists = false;
 
         for(Customer customer : customerService.getAllCustomers())
         {
             if(customer.getCustomerId() == customerId)
             {
                 customer.addOrder(newOrder);
+                customerExists = true;
             }
         }
 
-        response.setStatus(HttpStatus.OK.value());
-        //response.setStatus(HttpStatus.NO_CONTENT.value());
+        if(customerExists)
+        {
+            response.setStatus(HttpStatus.OK.value());
+        }
+        else
+        {
+            response.setStatus(HttpStatus.NO_CONTENT.value());
+        }
 
         return newOrder.getId();
     }

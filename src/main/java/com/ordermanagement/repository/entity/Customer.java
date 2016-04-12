@@ -13,7 +13,7 @@ public class Customer implements Serializable {
 
     @Id
     @Column
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int customerId;
 
     @Column
@@ -25,6 +25,12 @@ public class Customer implements Serializable {
     private LinkedList<Order> orders;
 
     public Customer() {
+        orders = new LinkedList<>();
+    }
+
+    public Customer(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public int getCustomerId() {

@@ -24,7 +24,11 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    private Customer customer;
+    public Order(String description) {
+        this.description = description;
+    }
+
+    //private Customer customer;
 
     public int getId()
     {
@@ -46,11 +50,11 @@ public class Order implements Serializable {
         this.description = description;
     }
 
-    public Customer getCustomer() {
+    /*public Customer getCustomer() {
         return customer;
     }
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
+    }*/
 }
