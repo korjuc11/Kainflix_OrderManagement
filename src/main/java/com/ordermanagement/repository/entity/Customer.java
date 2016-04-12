@@ -24,8 +24,6 @@ public class Customer implements Serializable {
 
     private LinkedList<Order> orders;
 
-    private LinkedList<Movie> movies;
-
     public Customer() {
     }
 
@@ -51,5 +49,10 @@ public class Customer implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public void addOrder(Order order)
+    {
+        orders.add(order);
     }
 }

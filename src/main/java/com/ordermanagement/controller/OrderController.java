@@ -1,6 +1,9 @@
 package com.ordermanagement.controller;
 
+import com.ordermanagement.repository.entity.Customer;
 import com.ordermanagement.repository.entity.Order;
+import com.ordermanagement.service.CustomerService;
+import com.ordermanagement.service.MovieService;
 import com.ordermanagement.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,16 +24,34 @@ import java.util.Map;
 @RestController
 public class OrderController {
 
+    @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private MovieService movieService;
+
     @RequestMapping(method = RequestMethod.POST, value="/cart")
     public int create(@RequestBody Map<String, Object> payload, HttpServletResponse response)
     {
         int customerId = (int) payload.get("customerId");
-        int orderId = 0;
+
+        Order newOrder = new Order();
+
+        for(Customer customer : customerService.getAllCustomers())
+        {
+            if(customer.getCustomerId() == customerId)
+            {
+                customer.addOrder(newOrder);
+            }
+        }
 
         response.setStatus(HttpStatus.OK.value());
         //response.setStatus(HttpStatus.NO_CONTENT.value());
 
-        return orderId;
+        return newOrder.getId();
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/cart")
