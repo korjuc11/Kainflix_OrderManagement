@@ -43,16 +43,25 @@ public class OrderController {
         //Customer c = new Customer();
         //customerService.saveCustomer(c);
 
-        Order newOrder = new Order();
-        orderService.saveOrder(newOrder);
-
         boolean customerExists = false;
+
+        Order newOrder = null;
 
         for(Customer customer : customerService.getAllCustomers())
         {
             if(customer.getCustomerId() == customerId)
             {
+                int maxId = 1;
+                for(Order order : customer.getOrders())
+                {
+                    if(order.getId() > maxId)
+                    {
+                        maxId = order.getId()+1;
+                    }
+                }
+                newOrder = new Order(maxId);
                 customer.addOrder(newOrder);
+                customerService.saveCustomer(customer);
                 customerExists = true;
             }
         }
@@ -60,13 +69,14 @@ public class OrderController {
         if(customerExists)
         {
             response.setStatus(HttpStatus.OK.value());
+            return newOrder.getId();
         }
         else
         {
             response.setStatus(HttpStatus.NO_CONTENT.value());
         }
 
-        return newOrder.getId();
+        return 0;
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/cart")
@@ -76,7 +86,7 @@ public class OrderController {
 
         response.setStatus(HttpStatus.OK.value());
         response.setStatus(HttpStatus.NO_CONTENT.value());
-        for (Order order : orderService.getAllOrders()) {
+        /*for (Order order : orderService.getAllOrders()) {
             if (order.getId() == orderId) {
 
                 Set<Movie> moviesSet = order.getMovies();
@@ -94,7 +104,7 @@ public class OrderController {
                 movie.setMovieId(movieId);
                 movies.add(movie);
             }
-        }
+        }*/
     }
 
     @RequestMapping(method=RequestMethod.DELETE, value="/cart")

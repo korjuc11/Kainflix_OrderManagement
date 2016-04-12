@@ -25,7 +25,9 @@ public class Customer implements Serializable {
     private LinkedList<Order> orders;
 
     public Customer() {
-        orders = new LinkedList<>();
+        if (orders == null) {
+            orders = new LinkedList<>();
+        }
     }
 
     public Customer(String firstName, String lastName) {
@@ -57,8 +59,11 @@ public class Customer implements Serializable {
         this.lastName = lastName;
     }
 
-    public void addOrder(Order order)
-    {
+    public void addOrder(Order order) {
         orders.add(order);
+    }
+
+    public LinkedList<Order> getOrders() {
+        return orders;
     }
 }

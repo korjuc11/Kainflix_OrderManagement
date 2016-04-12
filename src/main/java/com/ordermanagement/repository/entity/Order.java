@@ -14,7 +14,6 @@ import java.util.Set;
 @Table
 public class Order implements Serializable {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column
     private int orderID;
@@ -22,12 +21,10 @@ public class Order implements Serializable {
     @Column
     private String description;
 
-    private Set<Movie> movies;
+    //@ManyToMany(mappedBy="movies")
+    /*private Set<Movie> movies;
 
-    public Order() {
-    }
 
-    @ManyToMany(mappedBy="orders")
     public Set<Movie> getMovies()
     {
         return movies;
@@ -36,9 +33,16 @@ public class Order implements Serializable {
     public void setMovies(Set<Movie> movies)
     {
         this.movies = movies;
+    }*/
+
+    public Order() {
     }
 
-    private Customer customer;
+    public Order(int orderID) {
+        this.orderID = orderID;
+    }
+
+    //private Customer customer;
 
     public int getId()
     {

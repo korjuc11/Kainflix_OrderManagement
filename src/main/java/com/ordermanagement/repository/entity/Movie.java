@@ -20,9 +20,9 @@ public class Movie implements Serializable {
     @Column
     private String description;
 
-    private Set<Order> orders;
+    //@ManyToMany(mappedBy = "movies")
+    /*private Set<Order> orders;
 
-    @ManyToMany(mappedBy = "movies")
     public Set<Order> getOrders() {
         return orders;
     }
@@ -30,7 +30,7 @@ public class Movie implements Serializable {
     public void setOrders(Set<Order> orders)
     {
         this.orders = orders;
-    }
+    }*/
 
     public Movie() {
     }
