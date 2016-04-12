@@ -5,6 +5,7 @@ import org.hibernate.jpa.internal.schemagen.JpaSchemaGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * Created by Julian on 01.03.2016.
@@ -21,14 +22,23 @@ public class Order implements Serializable {
     @Column
     private String description;
 
+    private Set<Movie> movies;
+
     public Order() {
     }
 
-    public Order(String description) {
-        this.description = description;
+    @ManyToMany(mappedBy="orders")
+    public Set<Movie> getMovies()
+    {
+        return movies;
     }
 
-    //private Customer customer;
+    public void setMovies(Set<Movie> movies)
+    {
+        this.movies = movies;
+    }
+
+    private Customer customer;
 
     public int getId()
     {

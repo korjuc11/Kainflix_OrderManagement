@@ -3,6 +3,7 @@ package com.ordermanagement.repository.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * Created by Julian on 05.04.2016.
@@ -19,7 +20,17 @@ public class Movie implements Serializable {
     @Column
     private String description;
 
-    private LinkedList<Order> orders;
+    private Set<Order> orders;
+
+    @ManyToMany(mappedBy = "movies")
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders)
+    {
+        this.orders = orders;
+    }
 
     public Movie() {
     }

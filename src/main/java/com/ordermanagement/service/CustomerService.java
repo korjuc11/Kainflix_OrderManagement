@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 /**
  * Created by Julian on 05.04.2016.
  */
-@Service
+
 public interface CustomerService {
 
     Iterable<Customer> getAllCustomers();

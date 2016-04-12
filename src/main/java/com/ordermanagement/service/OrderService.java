@@ -1,6 +1,7 @@
 package com.ordermanagement.service;
 
 import com.ordermanagement.repository.entity.Order;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by Julian on 01.03.2016.

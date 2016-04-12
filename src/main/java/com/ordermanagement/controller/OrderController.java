@@ -1,6 +1,7 @@
 package com.ordermanagement.controller;
 
 import com.ordermanagement.repository.entity.Customer;
+import com.ordermanagement.repository.entity.Movie;
 import com.ordermanagement.repository.entity.Order;
 import com.ordermanagement.service.CustomerService;
 import com.ordermanagement.service.MovieService;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.annotation.HttpMethodConstraint;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Julian on 01.03.2016.
@@ -68,13 +70,31 @@ public class OrderController {
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/cart")
-    public void add(@RequestBody Map<String, Object> payload, HttpServletResponse response)
-    {
+    public void add(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
         int orderId = (int) payload.get("orderId");
         int movieId = (int) payload.get("movieId");
 
         response.setStatus(HttpStatus.OK.value());
         response.setStatus(HttpStatus.NO_CONTENT.value());
+        for (Order order : orderService.getAllOrders()) {
+            if (order.getId() == orderId) {
+
+                Set<Movie> moviesSet = order.getMovies();
+                Movie movie = new Movie();
+                movie.setMovieId(movieId);
+                movie.setDescription("");
+                moviesSet.add(movie);
+
+            }
+
+            else{
+                order = new Order();
+                Set<Movie> movies = order.getMovies();
+                Movie movie = new Movie();
+                movie.setMovieId(movieId);
+                movies.add(movie);
+            }
+        }
     }
 
     @RequestMapping(method=RequestMethod.DELETE, value="/cart")
