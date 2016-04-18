@@ -2,7 +2,10 @@ package com.ordermanagement.repository.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Julian on 05.04.2016.
@@ -13,8 +16,8 @@ public class Customer implements Serializable {
 
     @Id
     @Column
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int customerId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long customerId;
 
     @Column
     private String firstName;
@@ -22,12 +25,7 @@ public class Customer implements Serializable {
     @Column
     private String lastName;
 
-    private LinkedList<Order> orders;
-
     public Customer() {
-        if (orders == null) {
-            orders = new LinkedList<>();
-        }
     }
 
     public Customer(String firstName, String lastName) {
@@ -35,11 +33,11 @@ public class Customer implements Serializable {
         this.lastName = lastName;
     }
 
-    public int getCustomerId() {
+    public long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(long customerId) {
         this.customerId = customerId;
     }
 
@@ -59,11 +57,4 @@ public class Customer implements Serializable {
         this.lastName = lastName;
     }
 
-    public void addOrder(Order order) {
-        orders.add(order);
-    }
-
-    public LinkedList<Order> getOrders() {
-        return orders;
-    }
 }

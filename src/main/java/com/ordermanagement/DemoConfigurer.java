@@ -1,8 +1,8 @@
 package com.ordermanagement;
 
 import com.ordermanagement.repository.CustomerRepository;
-import com.ordermanagement.repository.entity.Customer;
-import com.ordermanagement.repository.entity.Movie;
+import com.ordermanagement.repository.entity.*;
+import com.ordermanagement.service.CustomerOrderRelationService;
 import com.ordermanagement.service.CustomerService;
 import com.ordermanagement.service.MovieService;
 import com.ordermanagement.service.OrderService;
@@ -25,15 +25,24 @@ public class DemoConfigurer {
     private OrderService orderService;
 
     @Autowired
+    private CustomerOrderRelationService customerOrderRelationService;
+
+    @Autowired
     private MovieService movieService;
 
     @PostConstruct
     public void createDemoData() {
         Customer customer1 = new Customer();
-        customerService.saveCustomer(customer1);
+        customerService.save(customer1);
+
+        OrderNew order1 = new OrderNew();
+        orderService.saveOrder(order1);
+
+        CustomerOrderRelation cor = new CustomerOrderRelation(new CustomerOrderID(customer1.getCustomerId(), order1.getOrderID()));
+        customerOrderRelationService.saveCustomerOrderRelation(cor);
 
         Customer customer2 = new Customer();
-        customerService.saveCustomer(customer2);
+        customerService.save(customer2);
 
         Movie movie1 = new Movie();
         movie1.setName("Avengers");

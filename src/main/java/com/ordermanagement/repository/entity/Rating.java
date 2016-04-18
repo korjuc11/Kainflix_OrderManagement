@@ -13,13 +13,13 @@ public class Rating implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private int ratingId;
+    private long ratingId;
 
-    public int getRatingId() {
+    public long getRatingId() {
         return ratingId;
     }
 
-    public void setRatingId(int ratingId) {
+    public void setRatingId(long ratingId) {
         this.ratingId = ratingId;
     }
 }

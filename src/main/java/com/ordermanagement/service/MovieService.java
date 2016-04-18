@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
  */
 public interface MovieService {
 
+    public Movie findById(long id);
     Iterable<Movie> getAllMovies();
     void saveMovie(Movie movie);
     void deleteMovie(Movie movie);

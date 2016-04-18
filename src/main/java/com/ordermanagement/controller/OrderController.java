@@ -1,24 +1,16 @@
 package com.ordermanagement.controller;
 
-import com.ordermanagement.repository.entity.Customer;
-import com.ordermanagement.repository.entity.Movie;
-import com.ordermanagement.repository.entity.Order;
-import com.ordermanagement.service.CustomerService;
-import com.ordermanagement.service.MovieService;
-import com.ordermanagement.service.OrderService;
+import com.ordermanagement.repository.entity.*;
+import com.ordermanagement.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.annotation.HttpMethodConstraint;
-import javax.servlet.http.HttpServlet;
+import javax.persistence.criteria.Order;
 import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Julian on 01.03.2016.
@@ -34,35 +26,33 @@ public class OrderController {
     private OrderService orderService;
 
     @Autowired
+    private CustomerOrderRelationService customerOrderRelationService;
+
+    @Autowired
+    private OrderMovieRelationService orderMovieRelationService;
+
+    @Autowired
     private MovieService movieService;
 
-    private int orderId = 1;
-
     @RequestMapping(method = RequestMethod.POST, value = "/cart")
-    public int createOrder(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
-        int customerId = (int) payload.get("customerId");
+    public long createOrder(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
+        try {
+            int customerId = (int) payload.get("customerId");
 
-        boolean customerExists = false;
+            OrderNew newOrder = null;
 
-        Order newOrder = null;
+            Customer customer = customerService.findById(customerId);
+            newOrder = new OrderNew();
+            orderService.saveOrder(newOrder);
+            customerService.save(customer);
+            customerOrderRelationService.saveCustomerOrderRelation(new CustomerOrderRelation(new CustomerOrderID(customerId, newOrder.getOrderID())));
 
-        for (Customer customer : customerService.getAllCustomers()) {
-            if (customer.getCustomerId() == customerId) {
-                newOrder = new Order(orderId++);
-                customer.addOrder(newOrder);
-                customerService.saveCustomer(customer);
-                customerExists = true;
-            }
-        }
-
-        if (customerExists) {
             response.setStatus(HttpStatus.OK.value());
             return newOrder.getOrderID();
-        } else {
+        } catch (Exception ex) {
             response.setStatus(HttpStatus.NO_CONTENT.value());
+            return 0;
         }
-
-        return 0;
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/cart")
@@ -75,16 +65,16 @@ public class OrderController {
 
             boolean orderFound = false;
 
-            for (Customer customer : customerService.getAllCustomers()) {
-                for (Order order : customer.getOrders()) {
-                    if (order.getOrderID() == orderId) {
-                        order.setStatusFlagOpen();
-                        Movie movie = new Movie(movieId, "blabla");
-                        order.addMovie(movie);
-                        customerService.saveCustomer(customer);
-                        orderFound = true;
-                        response.setStatus(HttpStatus.OK.value());
-                    }
+            for (CustomerOrderRelation customerOrderRelation : customerOrderRelationService.getAllCustomerOrderRelations()) {
+                if (customerOrderRelation.getCustomerOrderID().getOrderId() == orderId) {
+                    OrderNew order = orderService.findById(customerOrderRelation.getCustomerOrderID().getOrderId());
+                    order.setStatusFlagOpen();
+                    // ??? Film von Product Management bekommen ???
+                    Movie movie = new Movie(movieId, "newMovie");
+                    movieService.saveMovie(movie);
+                    orderMovieRelationService.saveOrderMovieRelation(new OrderMovieRelation(new OrderMovieID(order.getOrderID(), movie.getMovieId())));
+                    orderFound = true;
+                    response.setStatus(HttpStatus.OK.value());
                 }
             }
 
@@ -107,18 +97,12 @@ public class OrderController {
 
             boolean notFound = true;
 
-            for (Customer customer : customerService.getAllCustomers()) {
-                for (Order order : customer.getOrders()) {
-                    if (order.getOrderID() == orderId) {
-                        for (Movie movie : order.getMovies()) {
-                            notFound = !order.removeMovie(movie);
-                            if(!notFound)
-                            {
-                                customerService.saveCustomer(customer);
-                                response.setStatus(HttpStatus.OK.value());
-                            }
-                        }
-                    }
+            for (OrderMovieRelation orderMovieRelation : orderMovieRelationService.getAllOrderMovieRelations()) {
+                if (orderMovieRelation.getOrderMovieID().getOrderId() == orderId && orderMovieRelation.getOrderMovieID().getMovieId() == movieId) {
+                    orderMovieRelationService.deleteOrderMovieRelation(orderMovieRelation);
+                    movieService.deleteMovie(movieService.findById(movieId));
+                    notFound = false;
+                    response.setStatus(HttpStatus.OK.value());
                 }
             }
 
@@ -131,30 +115,54 @@ public class OrderController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/cart")
-    public Order readOrder(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
-        int orderId = (int) payload.get("orderId");
-
-        Order currentOrder = null;
-        for(Order order : orderService.getAllOrders())
-        {
-            if(order.getOrderID() == orderId && order.getStatusFlag().equalsIgnoreCase("open"))
-            {
-                currentOrder = order;
-
+    @ResponseBody
+    public List<Object> readOrder(@RequestParam int orderId, HttpServletResponse response) {
+        try {
+            if (orderService.findById(orderId) == null) {
+                response.setStatus(HttpStatus.NOT_FOUND.value());
+                return null;
+            } else {
+                OrderNew currentOrder = orderService.findById(orderId);
                 response.setStatus(HttpStatus.OK.value());
-                return currentOrder;
+                LinkedList<Object> objects = new LinkedList<>();
+                for (CustomerOrderRelation customerOrderRelation : customerOrderRelationService.getAllCustomerOrderRelations()) {
+                    if (customerOrderRelation.getCustomerOrderID().getOrderId() == orderId) {
+                        objects.add(customerOrderRelation.getCustomerOrderID().getCustomerId());
+                    }
+                }
+                for (OrderMovieRelation orderMovieRelation : orderMovieRelationService.getAllOrderMovieRelations()) {
+                    if (orderMovieRelation.getOrderMovieID().getOrderId() == orderId) {
+                        objects.add(movieService.findById(orderMovieRelation.getOrderMovieID().getMovieId()));
+                    }
+                }
+                objects.add(currentOrder.getStatusFlag());
+                return objects;
             }
+        } catch (Exception ex) {
+            response.setStatus(HttpStatus.NO_CONTENT.value());
+            return null;
+        }
+    }
 
-            else {
-                Order o = new Order();
-                orderService.saveOrder(o);
+    public double calculateTotalPrice(OrderNew order)
+    {
+        double sum = 0.0;
+
+        for(OrderMovieRelation orderMovieRelation : orderMovieRelationService.getAllOrderMovieRelations())
+        {
+            if(orderMovieRelation.getOrderMovieID().getOrderId() == order.getOrderID())
+            {
+                sum += movieService.findById(orderMovieRelation.getOrderMovieID().getMovieId()).getPrice();
             }
         }
 
+        return sum;
+    }
 
-        response.setStatus(HttpStatus.NO_CONTENT.value());
-        response.setStatus(HttpStatus.NOT_FOUND.value());
-
-        return currentOrder;
+    public void setStatusFlagToFinish(OrderNew order)
+    {
+        OrderNew orderNew = orderService.findById(order.getOrderID());
+        orderNew.setStatusFlagFinished();
+        orderService.saveOrder(orderNew);
     }
 }

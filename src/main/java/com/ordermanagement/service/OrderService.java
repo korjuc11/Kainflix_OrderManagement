@@ -1,17 +1,19 @@
 package com.ordermanagement.service;
 
-import com.ordermanagement.repository.entity.Order;
-import org.springframework.stereotype.Service;
+import com.ordermanagement.repository.entity.OrderMovieRelation;
+import com.ordermanagement.repository.entity.OrderNew;
 
 /**
  * Created by Julian on 01.03.2016.
  */
 public interface OrderService {
 
-    Iterable<Order> getAllOrders();
+    public OrderNew findById(long id);
 
-    void saveOrder(Order order);
+    Iterable<OrderNew> getAllOrders();
 
-    void deleteOrder(Order order);
+    void saveOrder(OrderNew orderNew);
+
+    void deleteOrder(OrderNew orderNew);
 
 }

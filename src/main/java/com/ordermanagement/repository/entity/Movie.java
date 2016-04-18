@@ -16,7 +16,7 @@ public class Movie implements Serializable {
 
     @Id
     @Column
-    private int movieId;
+    private long movieId;
 
     @Column
     private String name;
@@ -33,18 +33,6 @@ public class Movie implements Serializable {
     @Column
     private float price;
 
-    //@ManyToMany(mappedBy = "movies")
-    /*private Set<Order> orders;
-
-    public Set<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set<Order> orders)
-    {
-        this.orders = orders;
-    }*/
-
     public Movie() {
     }
 
@@ -53,11 +41,11 @@ public class Movie implements Serializable {
         this.name = description;
     }
 
-    public int getMovieId() {
+    public long getMovieId() {
         return movieId;
     }
 
-    public void setMovieId(int movieId) {
+    public void setMovieId(long movieId) {
         this.movieId = movieId;
     }
 

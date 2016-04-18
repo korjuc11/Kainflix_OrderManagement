@@ -1,7 +1,9 @@
 package com.ordermanagement.service;
 
 import com.ordermanagement.repository.entity.Customer;
-import org.springframework.stereotype.Service;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by Julian on 05.04.2016.
@@ -9,10 +11,12 @@ import org.springframework.stereotype.Service;
 
 public interface CustomerService {
 
-    Iterable<Customer> getAllCustomers();
+    public Customer findById(long id);
 
-    void saveCustomer(Customer customer);
+    public Iterable<Customer> findAll();
 
-    void deleteCustomer(Customer customer);
+    public void save(Customer customer);
+
+    public void delete(Customer customer);
 
 }
