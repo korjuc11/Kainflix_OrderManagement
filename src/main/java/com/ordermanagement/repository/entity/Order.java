@@ -21,6 +21,7 @@ public class Order implements Serializable {
 
     private LinkedList<Movie> movies;
 
+    @Column
     private String statusFlag;
 
     //@ManyToMany(mappedBy="movies")
@@ -38,9 +39,11 @@ public class Order implements Serializable {
     }*/
 
     public Order() {
+        movies = new LinkedList<>();
     }
 
     public Order(int orderID) {
+        movies = new LinkedList<>();
         this.orderID = orderID;
     }
 
@@ -77,17 +80,22 @@ public class Order implements Serializable {
     }
 
     public void addMovie(Movie movie) {
-        if (movies == null) {
-            movies = new LinkedList<>();
-        }
         movies.add(movie);
+    }
+
+    public boolean removeMovie(Movie movie) {
+        if (movies.contains(movie)) {
+            movies.remove(movie);
+            return true;
+        }
+        return false;
     }
 
     public void setStatusFlagOpen() {
         statusFlag = "open";
     }
 
-    public void setStatusFlagClosed() {
-        statusFlag = "closed";
+    public void setStatusFlagFinished() {
+        statusFlag = "finished";
     }
 }

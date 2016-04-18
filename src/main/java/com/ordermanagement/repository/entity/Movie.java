@@ -13,7 +13,6 @@ import java.util.Set;
 public class Movie implements Serializable {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
     @Column
     private int movieId;
 
@@ -33,6 +32,11 @@ public class Movie implements Serializable {
     }*/
 
     public Movie() {
+    }
+
+    public Movie(int movieId, String description) {
+        this.movieId = movieId;
+        this.description = description;
     }
 
     public int getMovieId() {
