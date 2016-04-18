@@ -12,36 +12,37 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 public class OrdermanagementApplicationTests {
-	private OrderController orderController;
-	@Before
-	public void createController()
-	{
-		orderController = new OrderController();
-	}
+
+    private OrderController orderController;
+
+    @Before
+    public void createController() {
+        orderController = new OrderController();
+    }
 
 
-	@Test
-	public void contextLoads() {
+    @Test
+    public void contextLoads() {
 
-	}
+    }
 
-	@Test
-	public void createFirstOrderReturnsOrderId()
-	{
-		Map<String,Object> map = new HashMap<>();
-		map.put("customerId",1);
-		Assert.assertEquals("First customer created must return 1",1,orderController.createOrder(map, new MockHttpServletResponse()));
+    @Test
+    public void createFirstOrderReturnsOrderId() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("customerId", 1);
+        Assert.assertEquals("First customer created must return 1", 1, orderController.createOrder(map, new MockHttpServletResponse()));
 
-	}
+    }
 
 /*	@Test
-	public void movieAddedToFirstOrderReturnsStatusCodeOk()
+    public void movieAddedToFirstOrderReturnsStatusCodeOk()
 	{
 		Map<String,Object> map = new HashMap<>();
 		map.put("orderId",1);
@@ -71,17 +72,15 @@ public class OrdermanagementApplicationTests {
 		Assert.assertEquals("Movie with id 1 deleted from order 1 returns statuscode ok",HttpServletResponse.SC_OK,orderController.deleteMovie(map,new MockHttpServletResponse()));
 	}*/
 
-	@Test
-	public void readOrderFromLeftShoppingCartWithStatusflagOpen()
-	{
-		Map<String,Object> map = new HashMap<>();
-		map.put("orderId",1);
-		//Assert.assertEquals("Make sure that it is returned order id 1 with the given order which's is is also 1 ",1,orderController.readOrder(map,new MockHttpServletResponse()));
+    @Test
+    public void readOrderFromLeftShoppingCartWithStatusflagOpen() {
+        int orderId = 1;
+        Assert.assertEquals("Make sure that it is returned order id 1 with the given order which's is is also 1 ", 1, orderController.readOrder(orderId, new MockHttpServletResponse()));
 
-	}
+    }
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-	}
+    }
 
 }

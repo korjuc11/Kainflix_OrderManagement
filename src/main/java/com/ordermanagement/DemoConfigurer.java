@@ -2,10 +2,7 @@ package com.ordermanagement;
 
 import com.ordermanagement.repository.CustomerRepository;
 import com.ordermanagement.repository.entity.*;
-import com.ordermanagement.service.CustomerOrderRelationService;
-import com.ordermanagement.service.CustomerService;
-import com.ordermanagement.service.MovieService;
-import com.ordermanagement.service.OrderService;
+import com.ordermanagement.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +23,9 @@ public class DemoConfigurer {
 
     @Autowired
     private CustomerOrderRelationService customerOrderRelationService;
+
+    @Autowired
+    private OrderMovieRelationService orderMovieRelationService;
 
     @Autowired
     private MovieService movieService;
@@ -50,6 +50,9 @@ public class DemoConfigurer {
         movie1.setDuration(124);
         movie1.setReleasedate(new Date(2013,06,02));
         movieService.saveMovie(movie1);
+
+        OrderMovieRelation omr = new OrderMovieRelation(new OrderMovieID(order1.getOrderID(), movie1.getMovieId()));
+        orderMovieRelationService.saveOrderMovieRelation(omr);
 
     }
 }
