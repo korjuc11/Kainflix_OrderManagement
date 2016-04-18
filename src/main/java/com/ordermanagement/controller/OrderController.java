@@ -133,10 +133,27 @@ public class OrderController {
     public Order readOrder(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
         int orderId = (int) payload.get("orderId");
 
+        Order currentOrder = null;
+        for(Order order : orderService.getAllOrders())
+        {
+            if(order.getOrderID() == orderId && order.getStatusFlag().equalsIgnoreCase("open"))
+            {
+                currentOrder = order;
+
+
+                return currentOrder;
+            }
+
+            else {
+                Order o = new Order();
+                orderService.saveOrder(o);
+            }
+        }
+
         response.setStatus(HttpStatus.OK.value());
         response.setStatus(HttpStatus.NO_CONTENT.value());
         response.setStatus(HttpStatus.NOT_FOUND.value());
 
-        return null;
+        return currentOrder;
     }
 }

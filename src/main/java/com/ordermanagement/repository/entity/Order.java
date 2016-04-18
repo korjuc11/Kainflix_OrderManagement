@@ -24,6 +24,9 @@ public class Order implements Serializable {
     @Column
     private String statusFlag;
 
+    @Column
+    private float totalPrice;
+
     //@ManyToMany(mappedBy="movies")
     /*private Set<Movie> movies;
 
@@ -98,4 +101,15 @@ public class Order implements Serializable {
     public void setStatusFlagFinished() {
         statusFlag = "finished";
     }
+
+    public float getTotalPrice() {
+        float sum=0;
+        for(Movie movie:getMovies())
+        {
+            sum+=movie.getPrice();
+        }
+        return sum;
+    }
+
+
 }

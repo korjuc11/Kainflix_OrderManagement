@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Date;
 
 /**
  * Created by Julian on 01.03.2016.
@@ -35,6 +36,10 @@ public class DemoConfigurer {
         customerService.saveCustomer(customer2);
 
         Movie movie1 = new Movie();
+        movie1.setName("Avengers");
+        movie1.setPrice(12.0f);
+        movie1.setDuration(124);
+        movie1.setReleasedate(new Date(2013,06,02));
         movieService.saveMovie(movie1);
 
     }

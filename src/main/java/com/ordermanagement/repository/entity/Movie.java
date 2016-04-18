@@ -2,6 +2,8 @@ package com.ordermanagement.repository.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.security.Timestamp;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -17,7 +19,19 @@ public class Movie implements Serializable {
     private int movieId;
 
     @Column
-    private String description;
+    private String name;
+
+    @Column
+    private Date releaseDate;
+
+    @Column
+    private int duration;
+
+    @Column
+    private Rating rating;
+
+    @Column
+    private float price;
 
     //@ManyToMany(mappedBy = "movies")
     /*private Set<Order> orders;
@@ -36,7 +50,7 @@ public class Movie implements Serializable {
 
     public Movie(int movieId, String description) {
         this.movieId = movieId;
-        this.description = description;
+        this.name = description;
     }
 
     public int getMovieId() {
@@ -47,11 +61,43 @@ public class Movie implements Serializable {
         this.movieId = movieId;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Date getReleasedate() {
+        return releaseDate;
+    }
+
+    public void setReleasedate(Date releasedate) {
+        this.releaseDate = releasedate;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public Rating getRating() {
+        return rating;
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 }
