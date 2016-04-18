@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.annotation.HttpMethodConstraint;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.Set;
@@ -140,7 +141,7 @@ public class OrderController {
             {
                 currentOrder = order;
 
-
+                response.setStatus(HttpStatus.OK.value());
                 return currentOrder;
             }
 
@@ -150,7 +151,7 @@ public class OrderController {
             }
         }
 
-        response.setStatus(HttpStatus.OK.value());
+
         response.setStatus(HttpStatus.NO_CONTENT.value());
         response.setStatus(HttpStatus.NOT_FOUND.value());
 
