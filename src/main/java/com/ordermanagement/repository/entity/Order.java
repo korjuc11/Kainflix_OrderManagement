@@ -1,7 +1,5 @@
 package com.ordermanagement.repository.entity;
 
-import org.hibernate.jpa.internal.schemagen.JpaSchemaGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -20,6 +18,10 @@ public class Order implements Serializable {
 
     @Column
     private String description;
+
+    private LinkedList<Movie> movies;
+
+    private String statusFlag;
 
     //@ManyToMany(mappedBy="movies")
     /*private Set<Movie> movies;
@@ -42,33 +44,50 @@ public class Order implements Serializable {
         this.orderID = orderID;
     }
 
-    //private Customer customer;
-
-    public int getId()
-    {
-        return this.orderID;
+    public int getOrderID() {
+        return orderID;
     }
 
-    public String getDescription()
-    {
-        return this.description;
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
     }
 
-    public void setId(int id)
-    {
-        this.orderID =id;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    /*public Customer getCustomer() {
-        return customer;
+    public LinkedList<Movie> getMovies() {
+        return movies;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }*/
+    public void setMovies(LinkedList<Movie> movies) {
+        this.movies = movies;
+    }
+
+    public String getStatusFlag() {
+        return statusFlag;
+    }
+
+    public void setStatusFlag(String statusFlag) {
+        this.statusFlag = statusFlag;
+    }
+
+    public void addMovie(Movie movie) {
+        if (movies == null) {
+            movies = new LinkedList<>();
+        }
+        movies.add(movie);
+    }
+
+    public void setStatusFlagOpen() {
+        statusFlag = "open";
+    }
+
+    public void setStatusFlagClosed() {
+        statusFlag = "closed";
+    }
 }

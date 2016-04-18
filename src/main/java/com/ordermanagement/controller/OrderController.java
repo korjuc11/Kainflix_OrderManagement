@@ -35,92 +35,77 @@ public class OrderController {
     @Autowired
     private MovieService movieService;
 
-    @RequestMapping(method = RequestMethod.POST, value="/cart")
-    public int create(@RequestBody Map<String, Object> payload, HttpServletResponse response)
-    {
-        int customerId = (int) payload.get("customerId");
+    private int orderId = 1;
 
-        //Customer c = new Customer();
-        //customerService.saveCustomer(c);
+    @RequestMapping(method = RequestMethod.POST, value = "/cart")
+    public int createOrder(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
+        int customerId = (int) payload.get("customerId");
 
         boolean customerExists = false;
 
         Order newOrder = null;
 
-        for(Customer customer : customerService.getAllCustomers())
-        {
-            if(customer.getCustomerId() == customerId)
-            {
-                int maxId = 1;
-                for(Order order : customer.getOrders())
-                {
-                    if(order.getId() > maxId)
-                    {
-                        maxId = order.getId()+1;
-                    }
-                }
-                newOrder = new Order(maxId);
+        for (Customer customer : customerService.getAllCustomers()) {
+            if (customer.getCustomerId() == customerId) {
+                newOrder = new Order(orderId++);
                 customer.addOrder(newOrder);
                 customerService.saveCustomer(customer);
                 customerExists = true;
             }
         }
 
-        if(customerExists)
-        {
+        if (customerExists) {
             response.setStatus(HttpStatus.OK.value());
-            return newOrder.getId();
-        }
-        else
-        {
+            return newOrder.getOrderID();
+        } else {
             response.setStatus(HttpStatus.NO_CONTENT.value());
         }
 
         return 0;
     }
 
-    @RequestMapping(method=RequestMethod.PUT, value="/cart")
-    public void add(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
+    @RequestMapping(method = RequestMethod.PUT, value = "/cart")
+    public void addMovie(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
         int orderId = (int) payload.get("orderId");
         int movieId = (int) payload.get("movieId");
 
-        response.setStatus(HttpStatus.OK.value());
-        response.setStatus(HttpStatus.NO_CONTENT.value());
-        /*for (Order order : orderService.getAllOrders()) {
-            if (order.getId() == orderId) {
+        boolean noContent = true;
 
-                Set<Movie> moviesSet = order.getMovies();
-                Movie movie = new Movie();
-                movie.setMovieId(movieId);
-                movie.setDescription("");
-                moviesSet.add(movie);
+        for (Customer customer : customerService.getAllCustomers()) {
+            for (Order order : customer.getOrders()) {
+                if (order.getOrderID() == orderId) {
 
+                    order.setStatusFlagOpen();
+
+                    for (Movie movie : movieService.getAllMovies()) {
+                        if (movie.getMovieId() == movieId) {
+                            order.addMovie(movie);
+                            noContent = false;
+                            response.setStatus(HttpStatus.OK.value());
+                        }
+                    }
+                }
             }
+        }
 
-            else{
-                order = new Order();
-                Set<Movie> movies = order.getMovies();
-                Movie movie = new Movie();
-                movie.setMovieId(movieId);
-                movies.add(movie);
-            }
-        }*/
+        if (noContent) {
+            response.setStatus(HttpStatus.NO_CONTENT.value());
+        }
     }
 
-    @RequestMapping(method=RequestMethod.DELETE, value="/cart")
-    public void delete(@RequestBody Map<String, Object> payload, HttpServletResponse response)
-    {
+    @RequestMapping(method = RequestMethod.DELETE, value = "/cart")
+    public void deleteMovie(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
         int orderId = (int) payload.get("orderId");
         int movieId = (int) payload.get("movieId");
+
 
         response.setStatus(HttpStatus.OK.value());
         response.setStatus(HttpStatus.NO_CONTENT.value());
         response.setStatus(HttpStatus.NOT_FOUND.value());
     }
 
-    @RequestMapping(method=RequestMethod.GET, value="/cart")
-    public Order read(@RequestBody Map<String, Object> payload, HttpServletResponse response)
-    {
+    @RequestMapping(method = RequestMethod.GET, value = "/cart")
+    public Order readOrder(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
         int orderId = (int) payload.get("orderId");
 
         response.setStatus(HttpStatus.OK.value());
