@@ -32,6 +32,7 @@ public class OrderNew implements Serializable {
         return orderID;
     }
 
+    public void setOrderID(long orderId){this.orderID = orderId;}
     public String getDescription() {
         return description;
     }
