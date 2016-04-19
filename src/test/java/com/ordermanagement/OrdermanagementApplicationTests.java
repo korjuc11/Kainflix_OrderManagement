@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
+@ActiveProfiles("dev")
 public class OrdermanagementApplicationTests {
 
     @Autowired
@@ -61,10 +63,9 @@ public class OrdermanagementApplicationTests {
 
         mockMvc.perform(post("/cart")).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].orderId").exists())
-                .andExpect(jsonPath("$[0].description").exists())
-                .andExpect(jsonPath("$[0].statusFlag", is("open")));
+                .andExpect(jsonPath("$orderId").exists())
+                .andExpect(jsonPath("$description").exists())
+                .andExpect(jsonPath("$statusFlag", is("open")));
     }
 
 
@@ -105,33 +106,7 @@ public class OrdermanagementApplicationTests {
         return obj;
     }
 
-	/*@Test		so sollten die void methoden getestet werden i man wtf
-	public void testCollectionAdd() {
-		Collection collection = new ArrayList();
-		assertEquals(0, collection.size());
-		collection.add("itemA");
-		assertEquals(1, collection.size());
-		collection.add("itemB");
-		assertEquals(2, collection.size());
-	}*/
 
-	/*
-	@Test
-	public void deleteMovieReturnsStatusCodeOk()
-	{
-		Map<String,Object> map = new HashMap<>();
-		map.put("orderId",1);
-		map.put("movieId",1);
-		Assert.assertEquals("Movie with id 1 deleted from order 1 returns statuscode ok",HttpServletResponse.SC_OK,orderController.deleteMovie(map,new MockHttpServletResponse()));
-	}*/
-/*
-    @Test
-    public void readOrderFromLeftShoppingCartWithStatusflagOpen() {
-        int orderId = 1;
-        Assert.assertEquals("Make sure that it is returned order id 1 with the given order which's is is also 1 ", 1, orderController.readOrder(orderId, new MockHttpServletResponse()));
-
-    }
-*/
 
     public OrderNew createTestOrder()
     {

@@ -4,6 +4,7 @@ import com.ordermanagement.repository.CustomerRepository;
 import com.ordermanagement.repository.entity.*;
 import com.ordermanagement.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +14,7 @@ import java.util.Date;
  * Created by Julian on 01.03.2016.
  */
 @Component
+@Profile("dev")
 public class DemoConfigurer {
 
     @Autowired
