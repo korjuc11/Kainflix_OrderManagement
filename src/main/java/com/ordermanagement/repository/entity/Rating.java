@@ -11,9 +11,12 @@ import java.io.Serializable;
 public class Rating implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private long ratingId;
+
+    public Rating(long ratingId) {
+        this.ratingId = ratingId;
+    }
 
     public long getRatingId() {
         return ratingId;

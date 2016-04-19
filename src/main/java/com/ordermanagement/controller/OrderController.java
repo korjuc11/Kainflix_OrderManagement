@@ -5,9 +5,12 @@ import com.ordermanagement.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.criteria.Order;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -69,10 +72,13 @@ public class OrderController {
                 if (customerOrderRelation.getCustomerOrderID().getOrderId() == orderId) {
                     OrderNew order = orderService.findById(customerOrderRelation.getCustomerOrderID().getOrderId());
                     order.setStatusFlagOpen();
-                    // ??? Film von Product Management bekommen ???
-                    Movie movie = new Movie(movieId, "newMovie");
-                    movieService.saveMovie(movie);
-                    orderMovieRelationService.saveOrderMovieRelation(new OrderMovieRelation(new OrderMovieID(order.getOrderID(), movie.getMovieId())));
+                    RestTemplate rt = new RestTemplate();
+                    Movie movieMock = rt.getForObject("http://demo7881501.mockable.io/movie", Movie.class);
+                    movieMock.setMovieId(movieId);
+                    movieMock.setReleasedate(new Date());
+                    movieMock.setRating(new Rating(2));
+                    movieService.saveMovie(movieMock);
+                    orderMovieRelationService.saveOrderMovieRelation(new OrderMovieRelation(new OrderMovieID(order.getOrderID(), movieId)));
                     orderFound = true;
                     response.setStatus(HttpStatus.OK.value());
                 }

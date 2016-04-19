@@ -49,6 +49,7 @@ public class DemoConfigurer {
         movie1.setPrice(12.0f);
         movie1.setDuration(124);
         movie1.setReleasedate(new Date(2013,06,02));
+        movie1.setRating(new Rating(1));
         movieService.saveMovie(movie1);
 
         OrderMovieRelation omr = new OrderMovieRelation(new OrderMovieID(order1.getOrderID(), movie1.getMovieId()));
